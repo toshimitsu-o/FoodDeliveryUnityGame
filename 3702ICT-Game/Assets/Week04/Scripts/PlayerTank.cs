@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class PlayerTank : MonoBehaviour
 {
 
-	public float moveSpeed = 10.0f;  // units per second
+	public float moveSpeed = 100.0f;  // units per second
 	public float rotateSpeed = 20.0f;
 
 	private Transform _transform;
@@ -35,21 +35,6 @@ public class PlayerTank : MonoBehaviour
 
 	public void RestartGame() {
 		SceneManager.LoadScene("Week04");
-	}
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Slowdown")
-        {
-			moveSpeed = moveSpeed / 2;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-		if (other.tag == "Slowdown")
-		{
-			moveSpeed = 10.0f;
-		}
 	}
 
 }

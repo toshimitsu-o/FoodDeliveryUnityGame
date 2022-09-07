@@ -16,19 +16,16 @@ public class NPC_FSM : MonoBehaviour
     public FSMState curState;
     private NavMeshAgent nav;
 
-
     // Start is called before the first frame update
     void Start()
     {
         curState = FSMState.Race_Start;
         nav = GetComponent<NavMeshAgent>();
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         switch (curState)
         {
             case FSMState.Race_Start: UpdateRaceStartState(); break;
@@ -41,6 +38,4 @@ public class NPC_FSM : MonoBehaviour
     {
         nav.SetDestination(waypoint.transform.position);
     }
-
-   
 }
