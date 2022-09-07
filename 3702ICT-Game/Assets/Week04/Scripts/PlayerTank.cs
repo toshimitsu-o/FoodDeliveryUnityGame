@@ -10,11 +10,7 @@ public class PlayerTank : MonoBehaviour
 	public float rotateSpeed = 20.0f;
 	public float playerHealth = 100;
 
-	public Transform PlayerTransform;
-	public Transform UFO_Waypoint;
-
 	public TMP_Text healthText;
-
 
 	private Transform _transform;
 	private Rigidbody _rigidbody;
@@ -27,7 +23,7 @@ public class PlayerTank : MonoBehaviour
 		_rigidbody = GetComponent<Rigidbody>();
 		rotateSpeed = rotateSpeed * 180 / Mathf.PI; // convert from rad to deg for rot function
 
-		PlayerTransform = GameObject.Find("Player").transform;
+		
 	}
 
 	// Update is called once per frame
@@ -65,12 +61,6 @@ public class PlayerTank : MonoBehaviour
         {
 			playerHealth = playerHealth - 25;
         }
-
-		if (other.tag == "UFO")
-        {
-			PlayerTransform.position = UFO_Waypoint.position;
-
-		}
     }
     private void OnTriggerExit(Collider other)
     {
