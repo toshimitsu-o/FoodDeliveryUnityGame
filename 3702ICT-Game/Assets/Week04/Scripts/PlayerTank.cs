@@ -1,16 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class PlayerTank : MonoBehaviour
 {
 
 	public float moveSpeed = 10.0f;  // units per second
 	public float rotateSpeed = 20.0f;
-	public float playerHealth = 100;
-
-	public TMP_Text healthText;
 
 	private Transform _transform;
 	private Rigidbody _rigidbody;
@@ -22,8 +18,6 @@ public class PlayerTank : MonoBehaviour
 		_transform = transform;
 		_rigidbody = GetComponent<Rigidbody>();
 		rotateSpeed = rotateSpeed * 180 / Mathf.PI; // convert from rad to deg for rot function
-
-		
 	}
 
 	// Update is called once per frame
@@ -37,13 +31,6 @@ public class PlayerTank : MonoBehaviour
 		// Tank Chassis is rigidbody, use MoveRotation and MovePosition
 		GetComponent<Rigidbody>().MoveRotation(Quaternion.AngleAxis(rot, Vector3.up));
 		GetComponent<Rigidbody>().MovePosition(_rigidbody.position + fwd);
-
-		healthText.text = "Health: " + playerHealth;
-
-		if(playerHealth == 0)
-        {
-			SceneManager.LoadScene("NPC Testing");
-        }
 	}
 
 	public void RestartGame() {
@@ -55,11 +42,6 @@ public class PlayerTank : MonoBehaviour
         if (other.tag == "Slowdown")
         {
 			moveSpeed = moveSpeed / 2;
-        }
-		
-		if(other.tag == "Kangaroo")
-        {
-			playerHealth = playerHealth - 25;
         }
     }
     private void OnTriggerExit(Collider other)
