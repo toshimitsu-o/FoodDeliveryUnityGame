@@ -28,7 +28,7 @@ public class NPC_Kangaroo : MonoBehaviour
         {
             
             patrolCount = patrolCount + 1;
-            print(patrolCount);
+            
             if (patrolCount == 2 && dist <= 1.4)
             {
                 patrolCount = 0;

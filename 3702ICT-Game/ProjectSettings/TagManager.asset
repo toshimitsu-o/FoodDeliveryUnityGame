@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Slowdown
   - Kangaroo
+  - UFO
   layers:
   - Default
   - TransparentFX
