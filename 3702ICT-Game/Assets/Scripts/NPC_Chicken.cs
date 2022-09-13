@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NPC_Kangaroo : MonoBehaviour
+public class NPC_Chicken : MonoBehaviour
 {
 
     public GameObject[] waypointList;
@@ -21,15 +21,15 @@ public class NPC_Kangaroo : MonoBehaviour
     {
         nav.SetDestination(waypointList[patrolCount].transform.position);
         float dist = Vector3.Distance(transform.position, waypointList[patrolCount].transform.position);
-
+       
        
 
-        if (dist <= 1.4)//<- number might change when asset is applied
+        if (dist <= 2.3)//<- number might change when asset is applied
         {
             
             patrolCount = patrolCount + 1;
             
-            if (patrolCount == 2 && dist <= 1.4)
+            if (patrolCount == 2 && dist <= 2.3)
             {
                 patrolCount = 0;
             }

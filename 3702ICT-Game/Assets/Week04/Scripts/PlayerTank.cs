@@ -61,7 +61,7 @@ public class PlayerTank : MonoBehaviour
 			moveSpeed = moveSpeed / 2;
         }
 		
-		if(other.tag == "Kangaroo")
+		if(other.tag == "Chicken")
         {
 			playerHealth = playerHealth - 25;
         }
