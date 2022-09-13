@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerTank : MonoBehaviour {
 	public float boosttimer;
@@ -11,10 +12,10 @@ public class PlayerTank : MonoBehaviour {
 	
 	private Transform _transform;
 	private Rigidbody _rigidbody;
+	public Text speedtext;
 	
 	// Use this for initialization
 	void Start () {
-		print(isboosted);
 		_transform = transform;
 		_rigidbody = GetComponent<Rigidbody>();
 		rotateSpeed = rotateSpeed * 180 / Mathf.PI; // convert from rad to deg for rot function
@@ -30,11 +31,10 @@ public class PlayerTank : MonoBehaviour {
 		// Tank Chassis is rigidbody, use MoveRotation and MovePosition
 		_rigidbody.MoveRotation(Quaternion.AngleAxis(rot, Vector3.up));
 		_rigidbody.MovePosition(_rigidbody.position + fwd);
-		print(boosttimer);
 
 		if (isboosted == true){
-			print(isboosted);
 			moveSpeed = 150;
+			print(moveSpeed);
 			boosttimer += time * Time.deltaTime;
 			if (boosttimer >= 5){
 				isboosted = false;
@@ -46,10 +46,9 @@ public class PlayerTank : MonoBehaviour {
 			boosttimer = 0;
 		}
 
-
 	// When Ammo get picked up, increase bullet count 
 	}
-	void ApplyAmmoPickup() {
+	public void ApplyAmmoPickup() {
 		isboosted = true;
 		//Debug.Log("Bullet count: " + bulletCount);
 	}
