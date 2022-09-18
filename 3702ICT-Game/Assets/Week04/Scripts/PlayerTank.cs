@@ -19,6 +19,7 @@ public class PlayerTank : MonoBehaviour {
 		_transform = transform;
 		_rigidbody = GetComponent<Rigidbody>();
 		rotateSpeed = rotateSpeed * 180 / Mathf.PI; // convert from rad to deg for rot function
+		speedtext.text = "Speed: " + moveSpeed.ToString();
 	}
 	
 	// Update is called once per frame
@@ -35,6 +36,7 @@ public class PlayerTank : MonoBehaviour {
 		if (isboosted == true){
 			moveSpeed = 150;
 			print(moveSpeed);
+			speedtext.text = "Speed: " + moveSpeed.ToString();
 			boosttimer += time * Time.deltaTime;
 			if (boosttimer >= 5){
 				isboosted = false;
@@ -42,6 +44,7 @@ public class PlayerTank : MonoBehaviour {
 		}
 		if (isboosted == false){
 			isboosted = false;
+			speedtext.text = "Speed: " + moveSpeed.ToString();
 			moveSpeed = 100;
 			boosttimer = 0;
 		}
