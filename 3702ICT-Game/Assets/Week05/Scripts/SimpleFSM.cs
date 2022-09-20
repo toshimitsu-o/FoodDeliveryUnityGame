@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.AI;
 
 public class SimpleFSM : MonoBehaviour 
 {
@@ -13,15 +12,10 @@ public class SimpleFSM : MonoBehaviour
         Dead,
     }
 
-    // List of waypoints
-    public GameObject[] waypointList;
-
-    // reference the NavMeshAgent
-    private NavMeshAgent nav;
-    private int currentWaypoint;
-
-    // Current state that the NPC is reaching
-    public FSMState curState;
+    public GameObject[] waypointList; 
+    private UnityEngine.AI.NavMeshAgent nav;
+	// Current state that the NPC is reaching
+	public FSMState curState;
 
 	protected Transform playerTransform;// Player Transform
 
@@ -48,23 +42,21 @@ public class SimpleFSM : MonoBehaviour
 
 	public GameObject explosion;
 	public GameObject smokeTrail;
-
-    // State changed to Patrol or not
-    private bool outOfPatrol = false;
+    protected Vector3 destPos;
+    public float moveSpeed = 12.0f; // Speed of the tank
+    public float rotSpeed = 2.0f; // Tank Rotation Speed
 
     /*
      * Initialize the Finite state machine for the NPC tank
      */
 	void Start() {
 
-        nav = GetComponent<NavMeshAgent>();
-        currentWaypoint = 0;
-        nav.SetDestination(waypointList[currentWaypoint].transform.position);
-
         curState = FSMState.Patrol;
 
         bDead = false;
         elapsedTime = 0.0f;
+
+        nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
 
         // Get the target enemy(Player)
         GameObject objPlayer = GameObject.FindGameObjectWithTag("Player");
@@ -72,6 +64,7 @@ public class SimpleFSM : MonoBehaviour
 
         if(!playerTransform)
             print("Player doesn't exist.. Please add one with Tag named 'Player'");
+
 	}
 
 
@@ -90,57 +83,28 @@ public class SimpleFSM : MonoBehaviour
         // Go to dead state if no health left
         if (health <= 0)
             curState = FSMState.Dead;
-
-        //Debug.Log(curState);
     }
 
 	/*
      * Patrol state
      */
     protected void UpdatePatrolState() {
-        //Debug.Log("Patroling");
-        //Debug.Log(Vector3.Distance(transform.position, waypointList[currentWaypoint].transform.position));
-
-        // Check if the state just changed to Patrol from others
-        if (outOfPatrol) {
-            nav.SetDestination(waypointList[currentWaypoint].transform.position);
-            outOfPatrol = false;
-        }
-
-        // NavMeshAgent move code goes here (Task 1.1)
-        if (Vector3.Distance(transform.position, waypointList[currentWaypoint].transform.position) < 0.5)
-        {
-            if (currentWaypoint >= waypointList.Length -1)
-            {
-                currentWaypoint = 0;
-            } else
-            {
-                currentWaypoint += 1;
-            }
-            nav.SetDestination(waypointList[currentWaypoint].transform.position);
-        }
-
-        // Transitions
-        // Check the distance with player tank
-        // When the distance is near, transition to chase state
-        if (Vector3.Distance(transform.position, playerTransform.position) <= chaseRange) {
-            outOfPatrol = true;
-            curState = FSMState.Chase;
-        }
+        //print("changed to patrol state");
+        ShootBullet();
     }
 
-    private void SetDestToPlayer() {
-        if(System.DateTime.Now.Second % 0.25 == 0)
-            nav.SetDestination(playerTransform.position);
-    }
 
     /*
      * Chase state
 	 */
     protected void UpdateChaseState() {
 
-		// NavMeshAgent move code goes here (Task 1.2)
-        SetDestToPlayer();
+		// NavMeshAgent move code goes here
+        print("changed to chase state");
+        Vector3 chaserPos = new Vector3(transform.position.x, 0.0f, transform.position.z);
+		Vector3 targetPos = new Vector3(playerTransform.position.x, 0.0f, playerTransform.position.z);
+        GetComponent<Rigidbody>().MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPos - chaserPos), Time.deltaTime * rotSpeed));
+        GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + transform.forward * Time.deltaTime * moveSpeed);
 
 		// Transitions
         // Check the distance with player tank
@@ -151,8 +115,9 @@ public class SimpleFSM : MonoBehaviour
         }
         // Go back to patrol is it become too far
         else if (dist >= chaseRange) {
-            curState = FSMState.Patrol;
+			curState = FSMState.Patrol;
 		}
+		
 	}
 	
 
@@ -170,18 +135,20 @@ public class SimpleFSM : MonoBehaviour
         // Transition to patrol if the tank is too far
         else if (dist >= chaseRange) {
 			curState = FSMState.Patrol;
-		} else if (dist <= attackRangeStop) { // If in attackRangeStop range
-            nav.isStopped = true;
-        } else {
-            SetDestToPlayer(); // Set destination
-            nav.isStopped = false; // move
-        }
+		}
 
         // Always Turn the turret towards the player
 		if (turret) {
 			Quaternion turretRotation = Quaternion.LookRotation(playerTransform.position - transform.position);
         	turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, turretRotation, Time.deltaTime * turretRotSpeed); 
 		}
+
+        if (dist <= attackRangeStop){
+            nav.isStopped = true;
+        }
+        else if (dist>= attackRangeStop){
+            nav.isStopped = false;
+        }
 
         // Shoot the bullets
         ShootBullet();
@@ -192,9 +159,9 @@ public class SimpleFSM : MonoBehaviour
      * Dead state
      */
     protected void UpdateDeadState() {
+        nav.enabled = false;
         // Show the dead animation with some physics effects
         if (!bDead) {
-            nav.enabled = false; // Stop the navigation
             bDead = true;
             Explode();
         }
@@ -240,15 +207,6 @@ public class SimpleFSM : MonoBehaviour
 	protected void CreateFinalExplosion() {
 		if (explosion) 
 			Instantiate(explosion, transform.position, transform.rotation);
-	}
-
-
-	void OnDrawGizmos () {
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireSphere(transform.position, chaseRange);
-
-		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(transform.position, attackRange);
 	}
 
 }

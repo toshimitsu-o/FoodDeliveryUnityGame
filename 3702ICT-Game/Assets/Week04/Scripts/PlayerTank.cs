@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerTank : MonoBehaviour {
 	public float boosttimer;
-	public bool isboosted = false;
+	public string isboosted = "false";
 
 	public float moveSpeed = 100.0f;  // units per second
 	public float rotateSpeed = 3.0f;
@@ -33,26 +33,35 @@ public class PlayerTank : MonoBehaviour {
 		_rigidbody.MoveRotation(Quaternion.AngleAxis(rot, Vector3.up));
 		_rigidbody.MovePosition(_rigidbody.position + fwd);
 
-		if (isboosted == true){
+		if (isboosted == "true"){
 			moveSpeed = 150;
 			print(moveSpeed);
 			speedtext.text = "Speed: " + moveSpeed.ToString();
 			boosttimer += time * Time.deltaTime;
 			if (boosttimer >= 5){
-				isboosted = false;
+				isboosted = "false";
 			}
 		}
-		if (isboosted == false){
-			isboosted = false;
+		if (isboosted == "false"){
+			isboosted = "false";
 			speedtext.text = "Speed: " + moveSpeed.ToString();
 			moveSpeed = 100;
 			boosttimer = 0;
 		}
 
+		if (isboosted == "attacked"){
+			moveSpeed = 0;
+			speedtext.text = "Speed: " + moveSpeed.ToString();
+			boosttimer += time * Time.deltaTime;
+			if (boosttimer >= 5){
+				isboosted = "false";
+			}
+		}
+
 	// When Ammo get picked up, increase bullet count 
 	}
 	public void ApplyAmmoPickup() {
-		isboosted = true;
+		isboosted = "true";
 		//Debug.Log("Bullet count: " + bulletCount);
 	}
 	/*
