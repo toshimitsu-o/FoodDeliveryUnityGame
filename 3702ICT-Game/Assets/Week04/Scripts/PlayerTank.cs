@@ -9,6 +9,7 @@ public class PlayerTank : MonoBehaviour {
 	public float moveSpeed = 100.0f;  // units per second
 	public float rotateSpeed = 3.0f;
 	public float time = 1; 
+	public float speed = 0.0f;
 	
 	private Transform _transform;
 	private Rigidbody _rigidbody;
@@ -19,7 +20,6 @@ public class PlayerTank : MonoBehaviour {
 		_transform = transform;
 		_rigidbody = GetComponent<Rigidbody>();
 		rotateSpeed = rotateSpeed * 180 / Mathf.PI; // convert from rad to deg for rot function
-		speedtext.text = "Speed: " + moveSpeed.ToString();
 	}
 	
 	// Update is called once per frame
@@ -33,10 +33,14 @@ public class PlayerTank : MonoBehaviour {
 		_rigidbody.MoveRotation(Quaternion.AngleAxis(rot, Vector3.up));
 		_rigidbody.MovePosition(_rigidbody.position + fwd);
 
+		
+		speedtext.text = "Speed: " + (_rigidbody.velocity.magnitude * 1000000).ToString();
+
+		/*
 		if (isboosted == "true"){
 			moveSpeed = 150;
 			print(moveSpeed);
-			speedtext.text = "Speed: " + moveSpeed.ToString();
+			//speedtext.text = "Speed: " + rot.ToString();
 			boosttimer += time * Time.deltaTime;
 			if (boosttimer >= 5){
 				isboosted = "false";
@@ -44,19 +48,19 @@ public class PlayerTank : MonoBehaviour {
 		}
 		if (isboosted == "false"){
 			isboosted = "false";
-			speedtext.text = "Speed: " + moveSpeed.ToString();
+			//speedtext.text = "Speed: " + rot.ToString();
 			moveSpeed = 100;
 			boosttimer = 0;
 		}
 
 		if (isboosted == "attacked"){
 			moveSpeed = 0;
-			speedtext.text = "Speed: " + moveSpeed.ToString();
+			//speedtext.text = "Speed: " + rot.ToString();
 			boosttimer += time * Time.deltaTime;
 			if (boosttimer >= 5){
 				isboosted = "false";
 			}
-		}
+		}*/
 
 	// When Ammo get picked up, increase bullet count 
 	}

@@ -788,6 +788,7 @@ MonoBehaviour:
   moveSpeed: 100
   rotateSpeed: 20
   time: 1
+  speed: 0
   speedtext: {fileID: 0}
 --- !u!1 &1844595468 stripped
 GameObject:
@@ -840,6 +841,7 @@ MonoBehaviour:
   moveSpeed: 100
   rotateSpeed: 20
   time: 1
+  speed: 0
   speedtext: {fileID: 0}
 --- !u!1 &1858313852
 GameObject:
@@ -860,7 +862,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1858313853
 Transform:
   m_ObjectHideFlags: 0
@@ -1115,6 +1117,7 @@ MonoBehaviour:
   moveSpeed: 100
   rotateSpeed: 3
   time: 1
+  speed: 0
   speedtext: {fileID: 367902317}
 --- !u!1 &2002904038
 GameObject:
