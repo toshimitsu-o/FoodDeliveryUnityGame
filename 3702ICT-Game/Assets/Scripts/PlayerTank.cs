@@ -71,6 +71,11 @@ public class PlayerTank : MonoBehaviour
 			PlayerTransform.position = UFO_Waypoint.position;
 
 		}
+		if (other.gameObject.tag == "Health")
+		{
+			Destroy(other.gameObject);
+			playerHealth = playerHealth + 25;
+		}
     }
     private void OnTriggerExit(Collider other)
     {
