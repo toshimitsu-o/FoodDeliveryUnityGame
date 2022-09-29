@@ -87,6 +87,7 @@ public class PlayerTank : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Slowdown")
         {
 			moveSpeed = moveSpeed / 2;
@@ -116,13 +117,17 @@ public class PlayerTank : MonoBehaviour
             }
 
         }
+        if(other.gameObject.tag == "Goal")
+        {
+            SceneManager.LoadScene("EndScreen");
+        }
 
     }
     private void OnTriggerExit(Collider other)
     {
 		if (other.tag == "Slowdown")
 		{
-			moveSpeed = 10.0f;
+			moveSpeed = 15.0f;
 		}
 	}
 
