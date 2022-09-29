@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using TMPro;
 
 public class PlayerTank : MonoBehaviour
@@ -19,16 +20,24 @@ public class PlayerTank : MonoBehaviour
 	private Transform _transform;
 	private Rigidbody _rigidbody;
 
+    public float OriginalHealthX;
+    public float healthBarHeight;
+    public Image healthBar;
+    public float healthPercentage;
+    public float healthFloat;
 
-	// Use this for initialization
-	void Start()
+
+    // Use this for initialization
+    void Start()
 	{
 		_transform = transform;
 		_rigidbody = GetComponent<Rigidbody>();
 		rotateSpeed = rotateSpeed * 180 / Mathf.PI; // convert from rad to deg for rot function
 
 		PlayerTransform = GameObject.Find("Player").transform;
-	}
+        OriginalHealthX = healthBar.sprite.rect.width;
+        healthBarHeight = healthBar.rectTransform.rect.height;
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -47,12 +56,34 @@ public class PlayerTank : MonoBehaviour
 		if(playerHealth == 0)
         {
 			SceneManager.LoadScene("NPC Testing");
-        }
+		}
 	}
 
-	public void RestartGame() {
+	public void RestartGame()
+	{
 		SceneManager.LoadScene("Week04");
 	}
+
+    public void ApplyDamage()
+    {
+		playerHealth = playerHealth - 25;
+		healthFloat = (float)playerHealth;
+        healthPercentage = healthFloat / 100f;
+        print(healthPercentage);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
+
+    }
+    public void ApplyHealing()
+    {
+        playerHealth = playerHealth + 25;
+        healthFloat = (float)playerHealth;
+        healthPercentage = healthFloat / 100f;
+        print(healthPercentage);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
+
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -63,7 +94,8 @@ public class PlayerTank : MonoBehaviour
 		
 		if(other.tag == "Chicken")
         {
-			playerHealth = playerHealth - 25;
+			ApplyDamage();
+			Destroy(other.gameObject);
         }
 
 		if (other.tag == "UFO")
@@ -73,8 +105,16 @@ public class PlayerTank : MonoBehaviour
 		}
 		if (other.gameObject.tag == "Health")
 		{
-			Destroy(other.gameObject);
-			playerHealth = playerHealth + 25;
+			if(playerHealth >= 100)
+			{
+                Destroy(other.gameObject);
+            }
+            else if(playerHealth < 100)
+			{
+				ApplyHealing();
+                Destroy(other.gameObject);
+            }
+			
 		}
     }
     private void OnTriggerExit(Collider other)
@@ -84,5 +124,6 @@ public class PlayerTank : MonoBehaviour
 			moveSpeed = 10.0f;
 		}
 	}
+
 
 }
