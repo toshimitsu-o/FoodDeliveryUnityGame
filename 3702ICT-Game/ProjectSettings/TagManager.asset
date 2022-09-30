@@ -7,6 +7,9 @@ TagManager:
   - Slowdown
   - UFO
   - Chicken
+  - Health
+  - Fire
+  - Goal
   layers:
   - Default
   - TransparentFX
