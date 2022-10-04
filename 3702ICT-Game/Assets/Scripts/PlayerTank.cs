@@ -26,6 +26,9 @@ public class PlayerTank : MonoBehaviour
     public float healthPercentage;
     public float healthFloat;
 
+    public int foodPickups = 0;
+    public int foodPickupsMax = 3;
+
 
     // Use this for initialization
     void Start()
@@ -130,5 +133,16 @@ public class PlayerTank : MonoBehaviour
 			moveSpeed = 15.0f;
 		}
 	}
+
+    // When collide with food, this gets triggered
+    public void ApplyFoodPickup()
+    {
+        foodPickups += 1;
+        // When reached to the max
+        if (foodPickups >= foodPickupsMax)
+        {
+            Debug.Log("All food picked up!");
+        }
+    }
 
 }
