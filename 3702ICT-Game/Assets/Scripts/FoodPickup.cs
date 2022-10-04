@@ -25,6 +25,7 @@ public class FoodPickup : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Player") {
             other.gameObject.SendMessage("ApplyFoodPickup");
+            Debug.Log("Food Cllided");
             Destroy(gameObject);
         } 
     }
