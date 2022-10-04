@@ -26,6 +26,8 @@ public class PlayerTank : MonoBehaviour
     public float healthPercentage;
     public float healthFloat;
 
+    public int foodPickups = 0;
+    public int foodPickupsMax = 3;
 
     // Use this for initialization
     void Start()
@@ -38,6 +40,7 @@ public class PlayerTank : MonoBehaviour
         PlayerTransform = GameObject.Find("Player").transform;
         OriginalHealthX = healthBar.sprite.rect.width;
         healthBarHeight = healthBar.rectTransform.rect.height;
+
     }
 
 	// Update is called once per frame
@@ -130,5 +133,19 @@ public class PlayerTank : MonoBehaviour
 			moveSpeed = 15.0f;
 		}
 	}
+
+    // When collide with food, this gets triggered
+    public void ApplyFoodPickup()
+    {
+        Debug.Log("Food picked up!");
+        foodPickups += 1;
+        // When reached to the max
+        if (foodPickups >= foodPickupsMax)
+        {
+            //Debug.Log("All food picked up!");
+            GameObject goal = GameObject.FindGameObjectWithTag("Goal");
+            goal.SendMessage("ApplyFoodCollected");
+        }
+    }
 
 }

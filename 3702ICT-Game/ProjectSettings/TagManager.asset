@@ -10,6 +10,8 @@ TagManager:
   - Health
   - Fire
   - Goal
+  - Goalpickup
+  - MinimapGoalicon
   layers:
   - Default
   - TransparentFX
