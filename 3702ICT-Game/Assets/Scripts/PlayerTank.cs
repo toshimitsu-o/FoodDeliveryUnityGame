@@ -26,8 +26,11 @@ public class PlayerTank : MonoBehaviour
     public float healthPercentage;
     public float healthFloat;
 
+    public TMP_Text orderStatusText; // Text for order status UI
     public int foodPickups = 0;
     public int foodPickupsMax = 3;
+    public Mask foodMask; // Mask for food count UI
+    
 
     // Use this for initialization
     void Start()
@@ -41,6 +44,8 @@ public class PlayerTank : MonoBehaviour
         OriginalHealthX = healthBar.sprite.rect.width;
         healthBarHeight = healthBar.rectTransform.rect.height;
 
+        // Update Food counter UI
+        UpdateFoodCount();
     }
 
 	// Update is called once per frame
@@ -120,7 +125,8 @@ public class PlayerTank : MonoBehaviour
             }
 
         }
-        if(other.gameObject.tag == "Goal")
+        // When player collide with goal object load the end scene
+        if(other.gameObject.tag == "Goalpickup")
         {
             SceneManager.LoadScene("EndScreen");
         }
@@ -139,6 +145,8 @@ public class PlayerTank : MonoBehaviour
     {
         Debug.Log("Food picked up!");
         foodPickups += 1;
+        // Update counter UI
+        UpdateFoodCount();
         // When reached to the max
         if (foodPickups >= foodPickupsMax)
         {
@@ -147,5 +155,18 @@ public class PlayerTank : MonoBehaviour
             goal.SendMessage("ApplyFoodCollected");
         }
     }
+
+    // Change the food mask size in UI
+	public void UpdateFoodCount() {
+        if (foodPickupsMax - foodPickups > 0) {
+            orderStatusText.text = (foodPickupsMax - foodPickups).ToString() + " Orders to Collect";
+        } else {
+            orderStatusText.text = "Now deliver the food!";
+        }
+		if (foodMask) {
+			RectTransform rectTransform = foodMask.GetComponent<RectTransform>();
+			rectTransform.sizeDelta = new Vector2(38f * foodPickups,rectTransform.sizeDelta.y);
+	    }
+	}
 
 }
