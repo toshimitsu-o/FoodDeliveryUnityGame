@@ -60,7 +60,7 @@ public class PlayerTank : MonoBehaviour
 		GetComponent<Rigidbody>().MoveRotation(Quaternion.AngleAxis(rot, Vector3.up));
 		GetComponent<Rigidbody>().MovePosition(_rigidbody.position + fwd);
 
-		healthText.text = "Health: " + playerHealth;
+		//healthText.text = "Health: " + playerHealth;
 
 		if(playerHealth == 0)
         {
