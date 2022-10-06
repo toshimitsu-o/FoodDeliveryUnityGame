@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerTank : MonoBehaviour
 {
 
-	public float moveSpeed = 10.0f;  // units per second
+	public float moveSpeed = 15.0f;  // units per second
 	public float rotateSpeed = 20.0f;
 	public float playerHealth = 100;
 
@@ -54,7 +54,10 @@ public class PlayerTank : MonoBehaviour
 
 		if(playerHealth == 0)
         {
-			SceneManager.LoadScene("NPC Testing");
+            moveSpeed = 5.0f;
+        }else if (playerHealth > 0)
+        {
+            moveSpeed = 15.0f;
         }
 	}
 
@@ -72,9 +75,20 @@ public class PlayerTank : MonoBehaviour
         healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
 
     }
+
+    public void ApplyBusDamage()
+    {
+        playerHealth = playerHealth - 50;
+        healthFloat = (float)playerHealth;
+        healthPercentage = healthFloat / 100f;
+        print(healthPercentage);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
+
+    }
     public void ApplyHealing()
     {
-        playerHealth = playerHealth + 25;
+        playerHealth = playerHealth + 50;
         healthFloat = (float)playerHealth;
         healthPercentage = healthFloat / 100f;
         print(healthPercentage);
@@ -115,6 +129,11 @@ public class PlayerTank : MonoBehaviour
             }
 
         }
+        if(other.tag == "Bus")
+        {
+            ApplyBusDamage();
+        }
+
         if(other.gameObject.tag == "Goal")
         {
             SceneManager.LoadScene("EndScreen");

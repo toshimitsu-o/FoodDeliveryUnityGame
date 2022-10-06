@@ -22,7 +22,7 @@ public class NPC_Bus : MonoBehaviour
     {
         nav.SetDestination(waypointList[curWaypoint].transform.position);
         float dist = Vector3.Distance(transform.position, waypointList[curWaypoint].transform.position);
-        print(Vector3.Distance(transform.position, waypointList[curWaypoint].transform.position));
+       
         if (dist <= 5)//<- Distance from waypoint
         {
 
