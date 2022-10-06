@@ -26,6 +26,7 @@ public class PlayerTank : MonoBehaviour
     public float healthPercentage;
     public float healthFloat;
 
+    public static float FinishTime;
 
     // Use this for initialization
     void Start()
@@ -120,6 +121,7 @@ public class PlayerTank : MonoBehaviour
         if(other.gameObject.tag == "Goal")
         {
             SceneManager.LoadScene("EndScreen");
+            FinishTime = timer.currentTime;
         }
 
     }
