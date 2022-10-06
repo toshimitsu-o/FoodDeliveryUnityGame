@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class NPC_FSM : MonoBehaviour
 {
@@ -12,9 +13,15 @@ public class NPC_FSM : MonoBehaviour
         Race_Start,
         Race_Finish,
     }
-    public GameObject waypoint;
+    //public GameObject waypoint;
     public FSMState curState;
     private NavMeshAgent nav;
+
+    // Waypoints
+    private int currentWaypoint;
+    public GameObject[] waypointList;
+
+    public TMP_Text enemyStatusText; // Text for enemy status UI
 
 
     // Start is called before the first frame update
@@ -22,6 +29,10 @@ public class NPC_FSM : MonoBehaviour
     {
         curState = FSMState.Race_Start;
         nav = GetComponent<NavMeshAgent>();
+        // Set the first waypoint
+        currentWaypoint = 0;
+        // Status text to set empty
+        enemyStatusText.text = "-";
         
     }
 
@@ -39,7 +50,22 @@ public class NPC_FSM : MonoBehaviour
 
     protected void UpdateRaceStartState()
     {
-        nav.SetDestination(waypoint.transform.position);
+        nav.SetDestination(waypointList[currentWaypoint].transform.position);
+
+        // When NPC get to the current waypoint
+        if (Vector3.Distance(transform.position, waypointList[currentWaypoint].transform.position) < 0.5)
+        {
+            if (currentWaypoint >= waypointList.Length -1)
+            {
+                Debug.Log("Goal!");
+                enemyStatusText.text = "Finished!";
+            } else
+            {
+                currentWaypoint += 1;
+                enemyStatusText.text = currentWaypoint + " collected";
+            }
+            nav.SetDestination(waypointList[currentWaypoint].transform.position);
+        }
     }
 
    
