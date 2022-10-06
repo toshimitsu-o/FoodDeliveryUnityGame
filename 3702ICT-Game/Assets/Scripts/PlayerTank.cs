@@ -14,8 +14,6 @@ public class PlayerTank : MonoBehaviour
 	public Transform PlayerTransform;
 	public Transform UFO_Waypoint;
 
-	public TMP_Text healthText;
-
 
 	private Transform _transform;
 	private Rigidbody _rigidbody;
@@ -30,7 +28,9 @@ public class PlayerTank : MonoBehaviour
     public int foodPickups = 0;
     public int foodPickupsMax = 3;
     public Mask foodMask; // Mask for food count UI
-    
+
+    public static float FinishTime;
+
 
     // Use this for initialization
     void Start()
@@ -62,15 +62,13 @@ public class PlayerTank : MonoBehaviour
 
 		//healthText.text = "Health: " + playerHealth;
 
-		if(playerHealth == 0)
+		if(playerHealth <= 0)
         {
-			SceneManager.LoadScene("NPC Testing");
+			SceneManager.LoadScene("LoseScreen");
         }
 	}
 
-	public void RestartGame() {
-		SceneManager.LoadScene("Week04");
-	}
+	
 
     public void ApplyDamage()
     {
@@ -93,6 +91,16 @@ public class PlayerTank : MonoBehaviour
 
     }
 
+    public void ApplyBusDamage()
+    {
+        playerHealth = playerHealth - 50;
+        healthFloat = (float)playerHealth;
+        healthPercentage = healthFloat / 100f;
+        print(healthPercentage);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
+
+    }
     private void OnTriggerEnter(Collider other)
     {
 
@@ -112,6 +120,10 @@ public class PlayerTank : MonoBehaviour
 			PlayerTransform.position = UFO_Waypoint.position;
 
 		}
+        if (other.tag == "Bus")
+        {
+            ApplyBusDamage();
+        }
         if (other.gameObject.tag == "Health")
         {
             if (playerHealth >= 100)
@@ -126,9 +138,10 @@ public class PlayerTank : MonoBehaviour
 
         }
         // When player collide with goal object load the end scene
-        if(other.gameObject.tag == "Goalpickup")
+        if (other.gameObject.tag == "Goalpickup")
         {
             SceneManager.LoadScene("EndScreen");
+            FinishTime = timer.currentTime;
         }
 
     }
