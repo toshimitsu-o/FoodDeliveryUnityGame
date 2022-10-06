@@ -24,7 +24,7 @@ public class NPC_Chicken : MonoBehaviour
        
        
 
-        if (dist <= 2.3)//<- number might change when asset is applied
+        if (dist <= 2.3)//<- Distance from waypoint
         {
             
             patrolCount = patrolCount + 1;

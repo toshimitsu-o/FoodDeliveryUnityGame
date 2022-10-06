@@ -61,7 +61,7 @@ public class NPC_UFO : MonoBehaviour
     {
         if (curWaypoint > -1)
         {
-            print(Vector3.Distance(transform.position, waypointList[curWaypoint].gameObject.transform.position));
+           
             // check if close to current waypoint
             if (Vector3.Distance(transform.position, waypointList[curWaypoint].gameObject.transform.position) <= 10.5f)
             {

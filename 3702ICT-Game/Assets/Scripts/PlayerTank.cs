@@ -14,9 +14,6 @@ public class PlayerTank : MonoBehaviour
 	public Transform PlayerTransform;
 	public Transform UFO_Waypoint;
 
-	public TMP_Text healthText;
-
-
 	private Transform _transform;
 	private Rigidbody _rigidbody;
 
@@ -53,7 +50,7 @@ public class PlayerTank : MonoBehaviour
 		GetComponent<Rigidbody>().MoveRotation(Quaternion.AngleAxis(rot, Vector3.up));
 		GetComponent<Rigidbody>().MovePosition(_rigidbody.position + fwd);
 
-		healthText.text = "Health: " + playerHealth;
+		
 
 		if(playerHealth == 0)
         {
