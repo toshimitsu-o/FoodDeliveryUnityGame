@@ -66,6 +66,8 @@ public class PlayerTank : MonoBehaviour
         {
 			SceneManager.LoadScene("LoseScreen");
         }
+
+        
 	}
 
 	

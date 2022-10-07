@@ -39,6 +39,7 @@ public class Bullet : MonoBehaviour
 				if (obj.tag == "Player")
 				{
 					PlayerTank tank = (PlayerTank) obj.GetComponent(typeof(PlayerTank));
+                    tank.moveSpeed = 0;
 					//tank.ApplyDamage(damage);
 
 

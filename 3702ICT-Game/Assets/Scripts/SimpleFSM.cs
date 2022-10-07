@@ -99,25 +99,6 @@ public class SimpleFSM : MonoBehaviour
 	 */
     protected void UpdateChaseState() {
 
-		// NavMeshAgent move code goes here
-        print("changed to chase state");
-        Vector3 chaserPos = new Vector3(transform.position.x, 0.0f, transform.position.z);
-		Vector3 targetPos = new Vector3(playerTransform.position.x, 0.0f, playerTransform.position.z);
-        GetComponent<Rigidbody>().MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetPos - chaserPos), Time.deltaTime * rotSpeed));
-        GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + transform.forward * Time.deltaTime * moveSpeed);
-
-		// Transitions
-        // Check the distance with player tank
-        // When the distance is near, transition to attack state
-		float dist = Vector3.Distance(transform.position, playerTransform.position);
-		if (dist <= attackRange) {
-            curState = FSMState.Attack;
-        }
-        // Go back to patrol is it become too far
-        else if (dist >= chaseRange) {
-			curState = FSMState.Patrol;
-		}
-		
 	}
 	
 
@@ -125,33 +106,6 @@ public class SimpleFSM : MonoBehaviour
 	 * Attack state
 	 */
     protected void UpdateAttackState() {
-
-		// Transitions
-		// Check the distance with the player tank
-        float dist = Vector3.Distance(transform.position, playerTransform.position);
-		if (dist > attackRange) {
-			curState = FSMState.Chase;
-		}
-        // Transition to patrol if the tank is too far
-        else if (dist >= chaseRange) {
-			curState = FSMState.Patrol;
-		}
-
-        // Always Turn the turret towards the player
-		if (turret) {
-			Quaternion turretRotation = Quaternion.LookRotation(playerTransform.position - transform.position);
-        	turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, turretRotation, Time.deltaTime * turretRotSpeed); 
-		}
-
-        if (dist <= attackRangeStop){
-            nav.isStopped = true;
-        }
-        else if (dist>= attackRangeStop){
-            nav.isStopped = false;
-        }
-
-        // Shoot the bullets
-        ShootBullet();
     }
 
 
@@ -159,12 +113,6 @@ public class SimpleFSM : MonoBehaviour
      * Dead state
      */
     protected void UpdateDeadState() {
-        nav.enabled = false;
-        // Show the dead animation with some physics effects
-        if (!bDead) {
-            bDead = true;
-            Explode();
-        }
     }
 
 
@@ -185,28 +133,5 @@ public class SimpleFSM : MonoBehaviour
     public void ApplyDamage(int damage ) {
     	health -= damage;
     }
-
-
-    protected void Explode() {
-        float rndX = Random.Range(8.0f, 12.0f);
-        float rndZ = Random.Range(8.0f, 12.0f);
-        for (int i = 0; i < 3; i++) {
-            GetComponent<Rigidbody>().AddExplosionForce(10.0f, transform.position - new Vector3(rndX, 2.0f, rndZ), 45.0f, 40.0f);
-            GetComponent<Rigidbody>().velocity = transform.TransformDirection(new Vector3(rndX, 10.0f, rndZ));
-        }
-
-		if (smokeTrail) {
-			GameObject clone = Instantiate(smokeTrail, transform.position, transform.rotation) as GameObject;
-			clone.transform.parent = transform;
-		}
-		Invoke ("CreateFinalExplosion", 1.4f);
-		Destroy(gameObject, 1.5f);
-	}
-	
-	
-	protected void CreateFinalExplosion() {
-		if (explosion) 
-			Instantiate(explosion, transform.position, transform.rotation);
-	}
 
 }
