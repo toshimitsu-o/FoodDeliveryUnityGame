@@ -30,6 +30,9 @@ public class PlayerTank : MonoBehaviour
     public Mask foodMask; // Mask for food count UI
 
     public static float FinishTime;
+    public string isboosted = "false";
+    public float boosttimer;
+    public float time = 1;
 
 
     // Use this for initialization
@@ -67,7 +70,19 @@ public class PlayerTank : MonoBehaviour
 			SceneManager.LoadScene("LoseScreen");
         }
 
-        
+        if (isboosted == "crowd"){
+            moveSpeed = 0;
+			boosttimer += time * Time.deltaTime;
+			if (boosttimer >= 5){
+				isboosted = "false";
+			}
+        }
+        if (isboosted == "false"){
+			isboosted = "false";
+			//speedtext.text = "Speed: " + rot.ToString();
+			moveSpeed = 100;
+			boosttimer = 0;
+		}
 	}
 
 	
@@ -182,6 +197,11 @@ public class PlayerTank : MonoBehaviour
 			RectTransform rectTransform = foodMask.GetComponent<RectTransform>();
 			rectTransform.sizeDelta = new Vector2(38f * foodPickups,rectTransform.sizeDelta.y);
 	    }
+	}
+
+    public void ApplyCrowd() {
+		isboosted = "crowd";
+		//Debug.Log("Bullet count: " + bulletCount);
 	}
 
 }
