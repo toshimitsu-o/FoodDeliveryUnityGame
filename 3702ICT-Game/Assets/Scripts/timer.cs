@@ -19,9 +19,11 @@ public class timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Update timer
         currentTime = currentTime + Time.deltaTime;
-
-        currentTimeText.text = "Time: " + currentTime.ToString();
+        int time = (int) currentTime; // Converting to Int
+        // Set the time to Text
+        currentTimeText.text = "Time: " + time.ToString();
     }
 
    

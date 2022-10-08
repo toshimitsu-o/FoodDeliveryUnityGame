@@ -32,7 +32,7 @@ public class NPC_FSM : MonoBehaviour
         // Set the first waypoint
         currentWaypoint = 0;
         // Status text to set empty
-        enemyStatusText.text = "-";
+        enemyStatusText.text = "0";
         
     }
 
