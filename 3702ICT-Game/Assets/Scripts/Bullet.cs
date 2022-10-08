@@ -6,8 +6,8 @@ public class Bullet : MonoBehaviour
     //Explosion Effect
     public GameObject Explosion;
 
-    public float speed = 300.0f;
-    public float lifeTime = 3.0f;
+    public float speed = 0.05f;
+    public float lifeTime = 5.0f;
     public int damage = 50;
 
 	private Vector3 newPos;

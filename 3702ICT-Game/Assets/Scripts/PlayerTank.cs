@@ -119,6 +119,10 @@ public class PlayerTank : MonoBehaviour
     {
         // Add health
         playerHealth = playerHealth + 25;
+        // Keep player health up to 100
+        if (playerHealth > 100){
+            playerHealth = 100;
+        }
         healthFloat = (float)playerHealth;
         healthPercentage = healthFloat / 100f;
         print(healthPercentage);
