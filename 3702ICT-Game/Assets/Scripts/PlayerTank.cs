@@ -34,6 +34,17 @@ public class PlayerTank : MonoBehaviour
     public float boosttimer;
     public float time = 1;
 
+    // Sounds
+    private AudioSource source;
+    public AudioClip foodpickupFX;
+    public AudioClip gasPickupFX;
+    public AudioClip damageChickenFX;
+    public AudioClip damageBusFX;
+    public AudioClip damageCrowdFX;
+    public AudioClip collideUfoFX;
+    public AudioClip slowdownFX;
+    public AudioClip emptyFX;
+    public AudioClip collideFX;
 
     // Use this for initialization
     void Start()
@@ -71,79 +82,108 @@ public class PlayerTank : MonoBehaviour
         }
 	}
 
-	
-
+	void Awake () {
+        source = GetComponent<AudioSource>();
+    }
+    // Damage actions when collide
     public void ApplyDamage()
     {
+        // Reduce health
         playerHealth = playerHealth - 25;
         healthFloat = (float)playerHealth;
         healthPercentage = healthFloat / 100f;
         print(healthPercentage);
-
-        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
-
+        // Update health UI
+        UpdateHealthUI();
+        // Play FX sound
+        source.PlayOneShot(damageChickenFX);
     }
 
+    // Damage actions when collide with Crowd
     public void ApplyCrowdDamage()
     {
+        // Reduce health
         playerHealth = playerHealth - 5;
         healthFloat = (float)playerHealth;
         healthPercentage = healthFloat / 100f;
         print(healthPercentage);
+        // Update health UI
+        UpdateHealthUI();
 
-        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
-
+        // Play FX sound
+        source.PlayOneShot(damageCrowdFX);
     }
 
+    // Recover health points
     public void ApplyHealing()
     {
+        // Add health
         playerHealth = playerHealth + 25;
         healthFloat = (float)playerHealth;
         healthPercentage = healthFloat / 100f;
         print(healthPercentage);
-
-        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
-
+        // Update health UI
+        UpdateHealthUI();
+        // Play FX sound
+        source.PlayOneShot(gasPickupFX);
     }
 
     public void ApplyBusDamage()
     {
+        // Reduce health
         playerHealth = playerHealth - 50;
         healthFloat = (float)playerHealth;
         healthPercentage = healthFloat / 100f;
         print(healthPercentage);
+        // Update health UI
+        UpdateHealthUI();
+        // Play FX sound
+        source.PlayOneShot(damageBusFX);
+    }
 
+    // Update health monitor UI 
+    private void UpdateHealthUI()
+    {
         healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
-
     }
     private void OnTriggerEnter(Collider other)
     {
-
+        // Collide with slowdown (oil spill)
         if (other.tag == "Slowdown")
         {
 			moveSpeed = moveSpeed / 2;
+            // Play FX sound
+            source.PlayOneShot(slowdownFX);
         }
-
+        // Collide with Chicken
         if (other.tag == "Chicken")
         {
             ApplyDamage();
+
             Destroy(other.gameObject);
         }
-
+        // Collide with UFO
         if (other.tag == "UFO")
         {
+            // Teleport player
 			PlayerTransform.position = UFO_Waypoint.position;
+            // Play FX sound
+            source.PlayOneShot(collideUfoFX);
 
 		}
+        // Collide with Bus
         if (other.tag == "Bus")
         {
             ApplyBusDamage();
         }
+        // Collide with Health healer (Gas Stops)
         if (other.gameObject.tag == "Health")
         {
             if (playerHealth >= 100)
             {
-                Destroy(other.gameObject);
+                // Play FX sound
+                source.PlayOneShot(emptyFX);
+                //Destroy(other.gameObject);
             }
             else if (playerHealth < 100)
             {
@@ -157,6 +197,13 @@ public class PlayerTank : MonoBehaviour
         {
             SceneManager.LoadScene("EndScreen");
             FinishTime = timer.currentTime;
+        }
+
+        // When player collide with racer
+        if (other.gameObject.tag == "Racer")
+        {
+            // Play FX sound
+            source.PlayOneShot(collideFX);
         }
 
     }
@@ -175,6 +222,8 @@ public class PlayerTank : MonoBehaviour
         foodPickups += 1;
         // Update counter UI
         UpdateFoodCount();
+        // Play FX sound
+        source.PlayOneShot(foodpickupFX);
         // When reached to the max
         if (foodPickups >= foodPickupsMax)
         {

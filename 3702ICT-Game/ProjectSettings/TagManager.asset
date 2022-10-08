@@ -12,6 +12,8 @@ TagManager:
   - Goal
   - Goalpickup
   - MinimapGoalicon
+  - Bus
+  - Racer
   layers:
   - Default
   - TransparentFX
