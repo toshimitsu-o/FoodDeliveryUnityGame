@@ -164,7 +164,6 @@ public class PlayerTank : MonoBehaviour
         {
             ApplyDamage();
 
-            Destroy(other.gameObject);
         }
         // Collide with UFO
         if (other.tag == "UFO")
@@ -213,6 +212,7 @@ public class PlayerTank : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        //if play leaves oil spill then return speed to normal
 		if (other.tag == "Slowdown")
 		{
 			moveSpeed = 15.0f;

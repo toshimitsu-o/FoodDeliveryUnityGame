@@ -28,7 +28,7 @@ public class NPC_Bus : MonoBehaviour
 
             curWaypoint = curWaypoint + 1;
 
-            if (curWaypoint == 9 && dist <= 5)
+            if (curWaypoint == 6 && dist <= 5)
             {
                 curWaypoint = 0;
             }

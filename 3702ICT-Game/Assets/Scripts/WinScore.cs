@@ -15,12 +15,15 @@ public class WinScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Hide medals when scene starts
         bronzeMedal.enabled = false;
         silverMedal.enabled = false;
         goldMedal.enabled = false;
 
+        //Set text to the players time
         timeText.text ="Your finish time was: " +  PlayerTank.FinishTime.ToString();
 
+        //Enable a medal based on finish time
         if(PlayerTank.FinishTime < 100)
         {
             goldMedal.enabled = true;
