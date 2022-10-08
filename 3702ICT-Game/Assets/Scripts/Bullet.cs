@@ -39,15 +39,7 @@ public class Bullet : MonoBehaviour
 				if (obj.tag == "Player")
 				{
 					PlayerTank tank = (PlayerTank) obj.GetComponent(typeof(PlayerTank));
-					tank.ApplyCrowd();
-
-
-				}
-				else if (obj.tag == "EnemyTank")
-				{
-					SimpleFSM tank = (SimpleFSM) obj.GetComponent(typeof(SimpleFSM));
-					tank.ApplyDamage(damage);
-
+					tank.ApplyCrowdDamage();
 				}
 			}
 		}

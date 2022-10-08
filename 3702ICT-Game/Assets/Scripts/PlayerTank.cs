@@ -69,20 +69,6 @@ public class PlayerTank : MonoBehaviour
         {
 			SceneManager.LoadScene("LoseScreen");
         }
-
-        if (isboosted == "crowd"){
-            moveSpeed = 0;
-			boosttimer += time * Time.deltaTime;
-			if (boosttimer >= 5){
-				isboosted = "false";
-			}
-        }
-        if (isboosted == "false"){
-			isboosted = "false";
-			//speedtext.text = "Speed: " + rot.ToString();
-			moveSpeed = 100;
-			boosttimer = 0;
-		}
 	}
 
 	
@@ -97,6 +83,18 @@ public class PlayerTank : MonoBehaviour
         healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
 
     }
+
+    public void ApplyCrowdDamage()
+    {
+        playerHealth = playerHealth - 5;
+        healthFloat = (float)playerHealth;
+        healthPercentage = healthFloat / 100f;
+        print(healthPercentage);
+
+        healthBar.rectTransform.sizeDelta = new Vector2(OriginalHealthX * healthPercentage, healthBarHeight);
+
+    }
+
     public void ApplyHealing()
     {
         playerHealth = playerHealth + 25;
