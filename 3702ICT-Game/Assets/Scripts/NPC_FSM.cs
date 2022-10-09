@@ -22,7 +22,6 @@ public class NPC_FSM : MonoBehaviour
     public GameObject[] waypointList;
 
     public TMP_Text enemyStatusText; // Text for enemy status UI
-    private bool isFinished;
 
 
     // Start is called before the first frame update
@@ -34,7 +33,6 @@ public class NPC_FSM : MonoBehaviour
         currentWaypoint = 0;
         // Status text to set empty
         enemyStatusText.text = "0";
-        isFinished = false;
         
     }
 
